@@ -1,18 +1,27 @@
 package services;
 
+import exceptions.EmptyArgumentException;
+import exceptions.InvalidDeviceException;
 import models.ElectricalAppliance;
 
-import java.security.InvalidParameterException;
 import java.util.List;
 
 public class Controller {
     private List<ElectricalAppliance> listOfDevicesInARoom;
     private Service service;
 
-    public Controller(String dataresource) {
-        listOfDevicesInARoom = new Initializer(dataresource).initialize();
+    public Controller() {
+    }
+
+    public Controller initController(String dataResource) {
+        listOfDevicesInARoom = new Initializer(dataResource).initialize();
         service = new Service();
-        DataValidator.check(listOfDevicesInARoom);
+        try {
+            DataValidator.check(listOfDevicesInARoom);
+        } catch (EmptyArgumentException e) {
+            System.out.println("There are no devices in the room. All your next actions will be pointless");
+        }
+        return this;
     }
 
 
@@ -29,30 +38,39 @@ public class Controller {
     }
 
     public void switchOn(ElectricalAppliance device) {
-        if (isInTheRoom(device))
+        if (isInTheRoom(device)) {
             service.switchOn(device);
-        else throw new InvalidParameterException("There is no such device in the room");
+        } else System.err.println("There is no such device in the room");
     }
 
     public void switchOff(ElectricalAppliance device) {
         if (isInTheRoom(device))
             service.switchOff(device);
-        else throw new InvalidParameterException("There is no such device in the room");
+        else System.err.println("There is no such device in the room");
     }
 
 
-    public boolean isInTheRoom(ElectricalAppliance device) {
+    private boolean isInTheRoom(ElectricalAppliance device) {
+        if (device == null) {
+            return false;
+        }
         for (ElectricalAppliance e : listOfDevicesInARoom)
             if (e.equals(device)) return true;
         return false;
     }
 
-    public ElectricalAppliance findDevicebyName(String name) {
-        DataValidator.check(name);
-        for (ElectricalAppliance e : listOfDevicesInARoom)
-            if (e.getName().equals(name))
+    public ElectricalAppliance findDeviceByName(String name) {
+        try {
+            DataValidator.check(name);
+        } catch (EmptyArgumentException e) {
+            System.out.println("There are no devices in the room");
+            return null;
+        }
+        for (ElectricalAppliance e : listOfDevicesInARoom) {
+            if (e.getName().equals(name)) {
                 return e;
-        throw new InvalidParameterException("No device witn " + name + " name");
+            }
+        }
+        return null;
     }
-
 }

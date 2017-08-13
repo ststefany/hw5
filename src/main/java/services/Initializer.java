@@ -1,5 +1,6 @@
 package services;
 
+import exceptions.FileValidateException;
 import models.ElectricalAppliance;
 import models.ElectricalApplianceFactory;
 
@@ -28,16 +29,16 @@ class Initializer {
 
     private List<String[]> getDataFromSource() {
         List<String[]> list = new ArrayList<>();
-        try (FileReader freader = new FileReader(resourceName)) {
-            BufferedReader reader = new BufferedReader(freader);
+        try (FileReader fReader = new FileReader(resourceName)) {
+            BufferedReader reader = new BufferedReader(fReader);
             String line = reader.readLine();
             while (line != null) {
                 list.add(line.split(","));
                 line = reader.readLine();
             }
-        }
-        catch (IOException e) {
-            System.err.println("I/O exception occurred");
+        } catch (FileNotFoundException e) {
+            throw new FileValidateException();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return list;

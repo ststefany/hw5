@@ -1,5 +1,6 @@
 package models;
 
+import exceptions.EmptyArgumentException;
 import services.DataValidator;
 import services.ElectricalApplianceTypes;
 
@@ -12,8 +13,14 @@ public class ElectricalApplianceFactory {
 
 
     public ElectricalAppliance create(String[] params) {
-        for (String i : params)
-            DataValidator.check((i));
+        try {
+            for (String i : params) {
+                DataValidator.check((i));
+            }
+        } catch (EmptyArgumentException e) {
+            System.err.println("Any of parameters cannot be empty");
+            return null;
+        }
 
         String name = getName(params);
         int power = getPower(params);
@@ -54,7 +61,7 @@ public class ElectricalApplianceFactory {
 
     private int getPower(String[] params) {
         int power = Integer.parseInt(params[POWER].trim());
-        if(power<0) throw new InvalidParameterException();
+        if (power < 0) throw new InvalidParameterException();
         return power;
     }
 

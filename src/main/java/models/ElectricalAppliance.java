@@ -1,9 +1,9 @@
 package models;
 
 public abstract class ElectricalAppliance {
-    protected boolean turnedOn;
-    protected int power;
-    protected String name;
+    private boolean turnedOn;
+    private int power;
+    private String name;
 
     protected ElectricalAppliance(String name, int power) {
         this.power = power;
@@ -36,6 +36,7 @@ public abstract class ElectricalAppliance {
     public String getName() {
         return name;
     }
+
 
     @Override
     public boolean equals(Object o) {
