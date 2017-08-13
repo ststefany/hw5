@@ -9,12 +9,14 @@ import java.util.stream.Collectors;
 class Service {
 
     final void switchOn(ElectricalAppliance e) {
+        //brackets and lines
         if (!e.isTurnedOn())
             e.switchOn();
         System.out.println(e.toString() + " is switched on");
     }
 
     final void switchOff(ElectricalAppliance e) {
+        //brackets and lines
         if (e.isTurnedOn())
             e.switchOff();
         System.out.println(this.toString() + " is switched off");
@@ -22,6 +24,7 @@ class Service {
 
     final int getCurrentPower(List<ElectricalAppliance> listOfDevicesInTheRoom) {
         int result = 0;
+        //brackets
         for (ElectricalAppliance device : listOfDevicesInTheRoom)
             result += device.getCurrentPower();
         return result;

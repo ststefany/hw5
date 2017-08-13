@@ -6,6 +6,7 @@ import models.ElectricalAppliance;
 import java.util.List;
 
 public class Controller {
+    //why do you have state in controller? Please, move it to service, at least. Best option - DAO.
     private List<ElectricalAppliance> listOfDevicesInARoom;
     private Service service;
 
@@ -50,10 +51,12 @@ public class Controller {
 
 
     private boolean isInTheRoom(ElectricalAppliance device) {
+        //Here it is not a false - it is NullPointerException, or InvalidArgumentException
         if (device == null) {
             return false;
         }
         for (ElectricalAppliance e : listOfDevicesInARoom)
+            //brackets and lines. Once more :-)
             if (e.equals(device)) return true;
         return false;
     }

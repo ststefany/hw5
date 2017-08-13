@@ -37,6 +37,7 @@ class Initializer {
                 line = reader.readLine();
             }
         } catch (FileNotFoundException e) {
+            //Please, add human readable text to exception
             throw new FileValidateException();
         } catch (IOException e) {
             e.printStackTrace();

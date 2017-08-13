@@ -18,6 +18,7 @@ public class ElectricalApplianceFactory {
                 DataValidator.check((i));
             }
         } catch (EmptyArgumentException e) {
+            //here is a good place to throw a checked exception. And handle this exception.
             System.err.println("Any of parameters cannot be empty");
             return null;
         }

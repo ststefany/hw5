@@ -10,6 +10,7 @@ public class Main {
         Main main = new Main();
         Controller controller = main.createController("src/main/resources/OneRoomStudioDevices.csv");
 
+        //please, avoid using magic numbers: use either constants, or random
         System.out.println(controller.findDeviceBasedOnParameters(0, 2300));
 
             controller.switchOn(controller.findDeviceByName("BostonDynamicsFridge"));
