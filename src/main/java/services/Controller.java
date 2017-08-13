@@ -1,7 +1,6 @@
 package services;
 
 import exceptions.EmptyArgumentException;
-import exceptions.InvalidDeviceException;
 import models.ElectricalAppliance;
 
 import java.util.List;
