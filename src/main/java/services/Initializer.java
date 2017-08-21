@@ -18,14 +18,14 @@ public class Initializer {
         this.resourceName = resourceName;
     }
 
-    public void initialize() {
+    public List<ElectricalAppliance> initialize() {
         List<ElectricalAppliance> listOfDevicesInTheRoom = new ArrayList<>();
 
         try {
             DataValidator.check(resourceName);
         } catch (EmptyArgumentException e) {
             DAO.getDAO().update(listOfDevicesInTheRoom);
-            return;
+            return listOfDevicesInTheRoom;
         }
 
         int countOfSkipped = 0;
@@ -45,6 +45,8 @@ public class Initializer {
         System.out.println(countOfSkipped + " lines of " + resourceName + " was(were) skipped");
 
         DAO.getDAO().update(listOfDevicesInTheRoom);
+
+        return listOfDevicesInTheRoom;
     }
 
 
