@@ -28,7 +28,7 @@ public class DataValidator {
         }
     }
 
-    public static void check(ElectricalAppliance device) throws DeviceNotFoundException{
+    public static void check(ElectricalAppliance device) throws DeviceNotFoundException {
         if (device == null) {
             throw new DeviceNotFoundException("Device doesn't exist");
         }

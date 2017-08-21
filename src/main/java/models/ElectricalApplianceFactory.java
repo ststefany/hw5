@@ -2,6 +2,7 @@ package models;
 
 import exceptions.ApplianceCreationException;
 import exceptions.EmptyArgumentException;
+import exceptions.InvalidArgumentException;
 import services.DataValidator;
 import services.ElectricalApplianceTypes;
 
@@ -59,8 +60,12 @@ public class ElectricalApplianceFactory {
         return params[NAME].trim();
     }
 
-    private int getPower(String[] params) {
-        int power = Integer.parseInt(params[POWER].trim());
+    private int getPower(String[] params) throws ApplianceCreationException {
+        int power = -1;
+        try { power = Integer.parseInt(params[POWER].trim());}
+        catch (NumberFormatException e) {
+            throw new ApplianceCreationException("Invalid value of power");
+        }
         if (power < 0) throw new InvalidParameterException();
         return power;
     }
