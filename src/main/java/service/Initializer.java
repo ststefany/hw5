@@ -43,7 +43,6 @@ public class Initializer {
             try {
                 listOfDevicesInTheRoom.add(factory.create(i));
             } catch (ApplianceCreationException e) {
-                e.getMessage();
                 countOfSkipped++;
             }
         }

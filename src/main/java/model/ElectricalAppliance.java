@@ -24,8 +24,7 @@ public abstract class ElectricalAppliance {
     }
 
     public final int getCurrentPower() {
-        int result = 0;
-        if (this.turnedOn) result = this.power;
+        int result = this.turnedOn ? this.power : 0;
         return result;
     }
 
