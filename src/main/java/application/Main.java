@@ -3,26 +3,36 @@ package application;/*Домашние электроприборы. Опред�
 Провести сортировку приборов в квартире на основе мощности. Найти
 прибор в квартире, соответствующий заданному диапазону параметров.*/
 
-import services.Controller;
+import controllers.Controller;
+import daos.DAO;
+import models.ElectricalAppliance;
+import services.Initializer;
+
+import java.util.List;
 
 public class Main {
+    private final static int MIN = 0;
+    private final static int MAX = 2300;
+
     public static void main(String[] args) {
-        Main main = new Main();
-        Controller controller = main.createController("src/main/resources/OneRoomStudioDevices.csv");
 
-        //please, avoid using magic numbers: use either constants, or random
-        System.out.println(controller.findDeviceBasedOnParameters(0, 2300));
+        Controller controller = Controller.createController("src/main/resources/OneRoomStudioDevices.csv");
 
-            controller.switchOn(controller.findDeviceByName("BostonDynamicsFridge"));
-            controller.switchOn(controller.findDeviceByName("TeslaHome"));
 
-        System.out.println(controller.getCurrentPower());
+        ElectricalAppliance fridge = controller.findDeviceByName("BostonDynamicsFridge");
+        //ElectricalAppliance notExisting = controller.findDeviceByName("TeslaHome", listOfDevicesInARoom);
+
+        System.out.println(controller.findDeviceBasedOnParameters(MIN, MAX));
+
+        controller.switchOn(fridge);
+        controller.switchOff(fridge);
+        //controller.switchOn(notExisting,listOfDevicesInARoom);
+
+        System.out.println("All devices are off. Power - " + controller.getCurrentPower());
+        controller.switchOn(fridge);
+        System.out.println("Fridge (100) is on. Power - " + controller.getCurrentPower());
+
         System.out.println(controller.sortMinToMaxPower());
 
-    }
-
-    public Controller createController(String dataResource) {
-        Controller controller = new Controller();
-        return controller.initController(dataResource);
     }
 }

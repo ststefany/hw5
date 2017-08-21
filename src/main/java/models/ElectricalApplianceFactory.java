@@ -1,5 +1,6 @@
 package models;
 
+import exceptions.ApplianceCreationException;
 import exceptions.EmptyArgumentException;
 import services.DataValidator;
 import services.ElectricalApplianceTypes;
@@ -12,15 +13,13 @@ public class ElectricalApplianceFactory {
     private static final int POWER = 2;
 
 
-    public ElectricalAppliance create(String[] params) {
+    public ElectricalAppliance create(String[] params) throws ApplianceCreationException {
         try {
             for (String i : params) {
                 DataValidator.check((i));
             }
         } catch (EmptyArgumentException e) {
-            //here is a good place to throw a checked exception. And handle this exception.
-            System.err.println("Any of parameters cannot be empty");
-            return null;
+            throw new ApplianceCreationException("Impossible to create an Electrical Appliance with given data");
         }
 
         String name = getName(params);
@@ -47,9 +46,9 @@ public class ElectricalApplianceFactory {
                 return new TV(name, power);
             case WASHER:
                 return new Washer(name, power);
-            default:
-                return null;
+
         }
+        throw new ApplianceCreationException("Impossible to create an Electrical Appliance with given data");
     }
 
     private ElectricalApplianceTypes getType(String[] params) {
