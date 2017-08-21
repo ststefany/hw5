@@ -3,12 +3,8 @@ package application;/*Домашние электроприборы. Опред�
 Провести сортировку приборов в квартире на основе мощности. Найти
 прибор в квартире, соответствующий заданному диапазону параметров.*/
 
-import controllers.Controller;
-import daos.DAO;
-import models.ElectricalAppliance;
-import services.Initializer;
-
-import java.util.List;
+import controller.Controller;
+import model.ElectricalAppliance;
 
 public class Main {
     private final static int MIN = 0;
@@ -20,13 +16,13 @@ public class Main {
 
 
         ElectricalAppliance fridge = controller.findDeviceByName("BostonDynamicsFridge");
-        //ElectricalAppliance notExisting = controller.findDeviceByName("TeslaHome", listOfDevicesInARoom);
+        ElectricalAppliance notExisting = controller.findDeviceByName("TeslaHome");
 
         System.out.println(controller.findDeviceBasedOnParameters(MIN, MAX));
 
         controller.switchOn(fridge);
         controller.switchOff(fridge);
-        //controller.switchOn(notExisting,listOfDevicesInARoom);
+        controller.switchOn(notExisting);
 
         System.out.println("All devices are off. Power - " + controller.getCurrentPower());
         controller.switchOn(fridge);
