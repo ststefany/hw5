@@ -1,46 +1,66 @@
 package services;
 
+import daos.DAO;
+import exceptions.DeviceNotFoundException;
 import models.ElectricalAppliance;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class Service {
+public class Service {
+    private List<ElectricalAppliance> listOfDevicesInARoom = DAO.getDAO().getData();
 
-    final void switchOn(ElectricalAppliance e) {
-        //brackets and lines
-        if (!e.isTurnedOn())
+
+    public final void switchOn(ElectricalAppliance e) {
+        if (!e.isTurnedOn()) {
             e.switchOn();
+        }
         System.out.println(e.toString() + " is switched on");
     }
 
-    final void switchOff(ElectricalAppliance e) {
-        //brackets and lines
-        if (e.isTurnedOn())
+    public final void switchOff(ElectricalAppliance e) {
+        if (e.isTurnedOn()) {
             e.switchOff();
-        System.out.println(this.toString() + " is switched off");
+        }
+        System.out.println(e.toString() + " is switched off");
     }
 
-    final int getCurrentPower(List<ElectricalAppliance> listOfDevicesInTheRoom) {
+    public final int getCurrentPower() {
         int result = 0;
-        //brackets
-        for (ElectricalAppliance device : listOfDevicesInTheRoom)
+        for (ElectricalAppliance device : listOfDevicesInARoom) {
             result += device.getCurrentPower();
+        }
         return result;
     }
 
-    List<ElectricalAppliance> sort(List<ElectricalAppliance> listOfDevicesInTheRoom) {
-        listOfDevicesInTheRoom.sort(Comparator.comparing(ElectricalAppliance::getPower));
-        return listOfDevicesInTheRoom;
+    public List<ElectricalAppliance> sort() {
+        listOfDevicesInARoom.sort(Comparator.comparing(ElectricalAppliance::getPower));
+        return listOfDevicesInARoom;
     }
 
-    List<ElectricalAppliance> findDeviceBasedOnParameters(int minPower, int maxPower, List<ElectricalAppliance> listOfDevicesInTheRoom) {
-        List<ElectricalAppliance> matchingDevices = listOfDevicesInTheRoom.stream()
+    public List<ElectricalAppliance> findDeviceBasedOnParameters(int minPower, int maxPower) {
+        List<ElectricalAppliance> matchingDevices = listOfDevicesInARoom.stream()
                 .filter((ElectricalAppliance e) -> e.getPower() <= maxPower && e.getPower() >= minPower)
                 .collect(Collectors.toList());
         return matchingDevices;
     }
 
+    public ElectricalAppliance findDeviceByName(String name) throws DeviceNotFoundException {
+        for (ElectricalAppliance e : listOfDevicesInARoom) {
+            if (e.getName().equals(name)) {
+                return e;
+            }
+        }
+        throw new DeviceNotFoundException("Device not found");
+    }
 
+    public boolean isInTheRoom(ElectricalAppliance device) {
+        for (ElectricalAppliance e : listOfDevicesInARoom)
+            if (e.equals(device)) {
+                return true;
+            }
+        return false;
+
+    }
 }

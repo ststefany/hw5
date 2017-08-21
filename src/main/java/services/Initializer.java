@@ -1,5 +1,8 @@
 package services;
 
+import daos.DAO;
+import exceptions.ApplianceCreationException;
+import exceptions.EmptyArgumentException;
 import exceptions.FileValidateException;
 import models.ElectricalAppliance;
 import models.ElectricalApplianceFactory;
@@ -8,22 +11,40 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-class Initializer {
+public class Initializer {
     private String resourceName;
 
-    Initializer(String resourceName) {
+    public Initializer(String resourceName) {
         this.resourceName = resourceName;
     }
 
-    List<ElectricalAppliance> initialize() {
-        ElectricalApplianceFactory factory = new ElectricalApplianceFactory();
-        List<String[]> list = getDataFromSource();
+    public void initialize() {
         List<ElectricalAppliance> listOfDevicesInTheRoom = new ArrayList<>();
 
-        for (String[] i : list) {
-            listOfDevicesInTheRoom.add(factory.create(i));
+        try {
+            DataValidator.check(resourceName);
+        } catch (EmptyArgumentException e) {
+            DAO.getDAO().update(listOfDevicesInTheRoom);
+            return;
         }
-        return listOfDevicesInTheRoom;
+
+        int countOfSkipped = 0;
+
+        ElectricalApplianceFactory factory = new ElectricalApplianceFactory();
+        List<String[]> list = getDataFromSource();
+
+        for (String[] i : list) {
+            try {
+                listOfDevicesInTheRoom.add(factory.create(i));
+            } catch (ApplianceCreationException e) {
+                e.getMessage();
+                countOfSkipped++;
+            }
+        }
+
+        System.out.println(countOfSkipped + " lines of " + resourceName + " was(were) skipped");
+
+        DAO.getDAO().update(listOfDevicesInTheRoom);
     }
 
 
@@ -37,8 +58,7 @@ class Initializer {
                 line = reader.readLine();
             }
         } catch (FileNotFoundException e) {
-            //Please, add human readable text to exception
-            throw new FileValidateException();
+            throw new FileValidateException("File can't be found");
         } catch (IOException e) {
             e.printStackTrace();
         }

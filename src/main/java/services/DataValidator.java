@@ -1,5 +1,6 @@
 package services;
 
+import exceptions.DeviceNotFoundException;
 import exceptions.EmptyArgumentException;
 import models.ElectricalAppliance;
 import exceptions.InvalidArgumentException;
@@ -25,8 +26,21 @@ public class DataValidator {
         if (listOfDevicesInARoom.isEmpty()) {
             throw new EmptyArgumentException();
         }
+    }
 
+    public static void check(ElectricalAppliance device) throws DeviceNotFoundException{
+        if (device == null) {
+            throw new DeviceNotFoundException("Device doesn't exist");
+        }
     }
 
 
+    public static void checkMinMax(int min, int max) {
+        if (min < 0 || max < 0) {
+            throw new InvalidArgumentException("Minimum and maximum values must be more than 0");
+        }
+        if (min > max) {
+            throw new InvalidArgumentException("Minimum value cannot be more than maximum one");
+        }
+    }
 }
