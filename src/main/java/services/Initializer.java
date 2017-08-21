@@ -33,6 +33,10 @@ public class Initializer {
         ElectricalApplianceFactory factory = new ElectricalApplianceFactory();
         List<String[]> list = getDataFromSource();
 
+        if(list.isEmpty()) {
+            return listOfDevicesInTheRoom;
+        }
+
         for (String[] i : list) {
             try {
                 listOfDevicesInTheRoom.add(factory.create(i));

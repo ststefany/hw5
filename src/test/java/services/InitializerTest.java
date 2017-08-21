@@ -27,6 +27,12 @@ public class InitializerTest {
         Assert.assertTrue(initializer.initialize().isEmpty());
     }
 
+    @Test
+    public void testCreatedListIsEmptyIfArgumentIsEmpty() {
+        Initializer initializer = new Initializer("");
+        Assert.assertTrue(initializer.initialize().isEmpty());
+    }
+
 
     @Test(expected = FileValidateException.class)
     public void testFileValidateExceptionIsThrownIfDataSourceDoesntExist() {
